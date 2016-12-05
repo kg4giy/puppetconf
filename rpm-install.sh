@@ -16,3 +16,9 @@ Set the server directory path and create the directories
 echo master-var-dir = /var/opt/puppetlabs/puppetserver >> /etc/puppetlabs/puppetserver/conf.d/puppetserver.conf
 mkdir -p /var/opt/puppetlabs/puppetserver
 chown -R puppet:puppet /var/opt/puppetlabs/puppetserver
+
+
+# JVM Settings (optional)
+# /etc/sysconfig/puppetserver and change the following line:
+# Modify this if you'd like to change the memory allocation, enable JMX, etc.
+# JAVA_ARGS="-Xms512m -Xmx512m
