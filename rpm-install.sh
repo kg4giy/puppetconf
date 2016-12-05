@@ -11,3 +11,8 @@ sudo yum install -y puppetserver
 # Firewall manipulation
 sudo firewall-cmd --permanent --zone=public --add-port=8140/tcp
 sudo firewall-cmd --reload
+
+Set the server directory path and create the directories
+echo master-var-dir = /var/opt/puppetlabs/puppetserver >> /etc/puppetlabs/puppetserver/conf.d/puppetserver.conf
+mkdir -p /var/opt/puppetlabs/puppetserver
+chown -R puppet:puppet /var/opt/puppetlabs/puppetserver
