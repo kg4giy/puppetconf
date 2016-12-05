@@ -79,4 +79,4 @@ Download the first catalog on the client:
 
 	$ puppet agent --test --server=puppet.example.com
 	
-TODO: Autosigning in AWS with KMS or similar for new nodes spun out of golden AMI.
+TODO: Autosigning in AWS with KMS or similar for new nodes spun out of golden AMI. (http://docs.aws.amazon.com/quickstart/latest/puppet/welcome.html)
