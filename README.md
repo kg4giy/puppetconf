@@ -28,6 +28,10 @@ In /etc/sysconfig/puppetserver and change the following line:
 
 	JAVA_ARGS="-Xms512m -Xmx512m
 
+### Install bundler (optional)
+	$ sudo puppetserver gem install bundler --no-ri --no-rdoc
+
+
 ### Manipulate the home location of the certificates to match the LFH standard. 
 
 In /etc/puppetlabs/puppet/puppet.conf
@@ -51,3 +55,23 @@ In /etc/puppetlabs/puppet/puppet.conf
 	[user]
     	vardir = /var/opt/puppetlabs/server
     	ssldir = $vardir/ssl
+
+# Connecting a Node
+
+## Manually connecting from a client
+Execute the test:
+	
+	$ puppet agent --test --server=puppet.example.com
+	
+## On the puppet server, sign the certificate  
+Check for new certificates:  
+	
+	$ puppet cert --list  
+
+If the fingerprint is good:  
+
+	$ puppet cert --sign client.example.com  
+	
+Download the first catalog on the client:
+
+	$ puppet agent --test --server=puppet.example.com
