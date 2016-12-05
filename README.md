@@ -27,3 +27,27 @@ _From: Excerpt From: Jo Rhett. “Learning Puppet 4.”_
 In /etc/sysconfig/puppetserver and change the following line:
 
 	JAVA_ARGS="-Xms512m -Xmx512m
+
+### Manipulate the home location of the certificates to match the LFH standard. 
+
+In /etc/puppetlabs/puppet/puppet.conf
+
+	[main]
+    	certname = $fqdn      # default value, could be left out
+
+	[agent]
+    	server = puppet.example.com
+
+	[master]
+	# Change the location of the certificates to account for bad puppet practices
+    	certname = puppet.example.com
+    	vardir = /var/opt/puppetlabs/server
+    	ssldir = $vardir/ssl
+    	cacert = /etc/puppetlabs/puppet/ssl/certs/ca.pem
+    	cacrl = /etc/puppetlabs/puppet/ssl/crl.pem
+    	hostcert = /etc/puppetlabs/puppet/ssl/certs/puppet.example.com.pem
+    	hostprivkey = /etc/puppetlabs/puppet/ssl/private_keys/puppet.example.com.pem
+
+	[user]
+    	vardir = /var/opt/puppetlabs/server
+    	ssldir = $vardir/ssl
