@@ -1,5 +1,6 @@
 # Basic Puppet Configurations Prior to building the cookbooks
 Initial configurations for puppet
+
 _From: Excerpt From: Jo Rhett. “Learning Puppet 4.”_
 
 ## Starting Puppet
