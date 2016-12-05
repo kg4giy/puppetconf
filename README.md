@@ -58,6 +58,8 @@ In /etc/puppetlabs/puppet/puppet.conf
 
 # Connecting a Node
 
+There are two ways to connect a node, the hard, manual way and the automatic way. First, the hard manual way to do testing and initial proof of concepts.
+
 ## Manually connecting from a client
 Execute the test:
 	
@@ -75,3 +77,5 @@ If the fingerprint is good:
 Download the first catalog on the client:
 
 	$ puppet agent --test --server=puppet.example.com
+	
+TODO: Autosigning in AWS with KMS or similar for new nodes spun out of golden AMI.
