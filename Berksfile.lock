@@ -1,0 +1,7 @@
+DEPENDENCIES
+  puppet
+    path: .
+    metadata: true
+
+GRAPH
+  puppet (0.1.0)

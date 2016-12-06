@@ -1,0 +1,20 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: centos-7
+  - name: RHEL-7.2
+  - name: rhel-6
+
+suites:
+  - name: default
+    run_list:
+      - recipe[puppet::default]
+    attributes:
