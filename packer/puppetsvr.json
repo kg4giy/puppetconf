@@ -1,0 +1,90 @@
+{
+   "variables": {
+     "ami_name": "",
+     "base_ami": "",
+     "app_git_sha":"",
+     "vpc_id": "",
+     "subnet_id": "",
+     "github_repo": "{{user `github_repo`}}",
+     "github_sha": "{{user `github_sha`}}",
+     "iam_role" : "",
+     "security_group_id": "",
+     "cert_decryption_password" : "",
+     "tecc_hosts_password" : "",
+     "target_env": "dev",
+     "new_relic_license": "",
+     "basic_auth_un": "",
+     "basic_auth_pw": "",
+     "proxy": "",
+     "vis_binaries_bucket": "",
+     "gemfile_source": "",
+     "region": "",
+     "environment": "prod",
+     "Environment": "",
+     "Server_Function": "",
+     "System": "",
+     "Fisma_Id": "",
+     "splunkEndpointIP": ""
+   },
+
+ "builders": [
+     {
+       "type": "amazon-ebs",
+       "region": "us-east-1",
+       "source_ami": "{{user `base_ami`}}",
+       "instance_type": "m4.large",
+       "ssh_username": "ubuntu",
+       "ami_name": "{{user `ami_name`}}",
+       "iam_instance_profile" : "{{user `iam_role`}}",
+       "security_group_id": "{{ user `security_group_id`}}",
+       "vpc_id": "{{user `vpc_id`}}",
+       "subnet_id": "{{user `subnet_id`}}",
+       "tags": {
+         "source_ami": "{{user `base_ami`}}",
+         "System": "{{user `System`}}",
+         "Server_Function": "{{user `Server_Function`}}",
+         "Fisma_Id": "{{user `Fisma_Id`}}",
+         "Environment": "{{user `environment`}}",
+         "github_repo": "{{user `github_repo`}}",
+         "github_sha": "{{user `github_sha`}}"
+       },
+       "ssh_private_ip": true
+     }
+   ],
+
+   "provisioners": [
+   {
+      "type": "shell",
+      "inline": ["sudo mkdir /packertmp /usr/tmp",
+                 "sudo chmod 1777 /packertmp",
+                 "mkdir /packertmp/berks-cookbooks"],
+      "execute_command": "{{ .Vars }} /bin/bash {{ .Path }}"
+    },
+    {
+      "type": "shell",
+      "inline": ["echo 'APT::ExtractTemplates::TempDir \"/usr/tmp\";' | sudo tee /etc/apt/apt.conf.d/02newapttmp"],
+      "execute_command": "{{ .Vars }} /bin/bash {{ .Path }}"
+    },
+    {
+      "type" : "shell",
+      "execute_command": "{{ .Vars }} sudo -E  /bin/bash '{{ .Path }}'",
+      "inline": ["apt-get -y update", "mkdir /tmp/packer", "chmod 777 /tmp/packer",
+                 "chage -d $(date +'%Y-%m-%d') root",
+                 "chage -E $(date -d 'next month' +'%Y-%m-%d') root",
+                 "chage -l root"]
+    },
+    {
+       "type": "chef-solo",
+       "install_command": "curl -L https://www.chef.io/chef/install.sh > /tmp/chef_install.sh && {{if .Sudo}}sudo{{end}} bash /tmp/chef_install.sh -v 12.10.24",
+       "execute_command": "(while /bin/true; do echo -e 'ok\n' >&2; sleep 180; done ) & {{if .Sudo}}sudo {{end}}chef-solo --no-color -c {{.ConfigPath}} -j {{.JsonPath}}; kill %1",
+       "staging_directory": "/packertmp/packer-chef-solo",
+       "cookbook_paths": [
+         "cookbooks-vendor"
+    {
+      "type": "shell",
+      "inline": ["sudo rm -rf /packertmp"],
+      "execute_command": "{{ .Vars }} /bin/bash {{ .Path }}"
+    }
+       ]
+       
+ }
